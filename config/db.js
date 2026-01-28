@@ -9,10 +9,15 @@ dns.setDefaultResultOrder('ipv4first');
 const connectDB = async () => {
   try {
     logger.info('Attempting to connect to MongoDB...');
-    const sanitizedUri = MONGO_URI ? MONGO_URI.replace(/:([^@]+)@/, ':****@') : 'UNDEFINED';
+    const uri = MONGO_URI || process.env.MONGODB_ATLAS_URI;
+    const sanitizedUri = uri ? uri.replace(/:([^@]+)@/, ':****@') : 'UNDEFINED';
     logger.info(`Using URI: ${sanitizedUri}`);
 
-    const conn = await mongoose.connect(MONGO_URI, {
+    if (!uri) {
+      throw new Error("MONGODB_ATLAS_URI is not defined in environment variables");
+    }
+
+    const conn = await mongoose.connect(uri, {
       serverSelectionTimeoutMS: 30000,
       socketTimeoutMS: 45000,
       family: 4, // Force IPv4
@@ -37,14 +42,12 @@ const connectDB = async () => {
 
   } catch (error) {
     logger.error(`❌ MongoDB Connection Failed: ${error.message}`);
-    logger.error('Server will continue running without database connection.');
     logger.error('Please check:');
     logger.error('1. Internet connectivity');
     logger.error('2. MongoDB Atlas cluster status');
     logger.error('3. DNS resolution (try using Google DNS: 8.8.8.8)');
 
-    // Don't exit - allow server to start for debugging
-    // process.exit(1);
+    throw error; // Re-throw so startServer knows it failed
   }
 };
 
