@@ -21,7 +21,18 @@ router.get('/', verifyToken, async (req, res) => {
             .populate('userId', 'name email')
             .sort({ timestamp: -1 });
 
-        res.json(reports);
+        // Fetch latest message for each report to show as preview/history
+        const reportsWithLastMessage = await Promise.all(reports.map(async (report) => {
+            const lastMsg = await ReportMessage.findOne({ reportId: report._id })
+                .sort({ createdAt: -1 });
+
+            return {
+                ...report.toObject(),
+                latestMessage: lastMsg ? lastMsg.message : report.description
+            };
+        }));
+
+        res.json(reportsWithLastMessage);
     } catch (err) {
         console.error('[FETCH REPORTS ERROR]', err);
         res.status(500).json({ error: 'Failed to fetch reports' });

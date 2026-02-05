@@ -1,49 +1,67 @@
-import { Verification_Email_Template, Welcome_Email_Template, Reset_Password_Email_Template, Reset_Password_OTP_Template, Password_Success_Template } from "./EmailTemplate.js";
+import {
+  Verification_Email_Template,
+  Welcome_Email_Template,
+  Reset_Password_Email_Template,
+  Reset_Password_OTP_Template,
+  Password_Success_Template,
+  EmailTranslations
+} from "./EmailTemplate.js";
 import { resend, transporter } from "./Email.config.js";
 import { marketPlace } from "../consts.js";
 //  console.log(transporter);
 
-export const sendVerificationEmail = async (email, name, verificationCode) => {
+// SEND VERIFICATION EMAIL
+export const sendVerificationEmail = async (email, name, verificationCode, language = 'en') => {
   try {
-    console.log(`📧 Attempting to send verification email to: ${email}`);
-    console.log(`📧 Verification Code: ${verificationCode}`);
+    console.log(`📧 Attempting to send verification email to: ${email} (Lang: ${language})`);
     console.log(`📧 From: A-Series <${process.env.EMAIL}>`);
+
+    // Use the template function with language support
+    const htmlContent = Verification_Email_Template(language, { name, verificationCode });
 
     const response = await resend.emails.send({
       from: `AI-MALL <${process.env.EMAIL}>`,
       to: [email],
-      subject: "Verify Your Email",
-      html: Verification_Email_Template.replace("{name}", name).replace("{verificationCode}", verificationCode)
-    })
+      subject: EmailTranslations[language]?.verification?.subject || "Verify Your Email",
+      html: htmlContent
+    });
 
     console.log("✅ Verification email sent successfully:", response);
     return response;
 
   } catch (error) {
     console.error('❌ VERIFICATION EMAIL ERROR:', error);
-    console.error('Error details:', JSON.stringify(error, null, 2));
     throw error; // Re-throw to let the caller know it failed
   }
 }
 
 // WELCOME EMAIL
-export const welcomeEmail = async (name, email) => {
-  const info = await resend.emails.send({
-    from: `AI-MALL <${process.env.EMAIL}>`,
-    to: [email],
-    subject: `Welcome ${name}`,
-    html: Welcome_Email_Template.replace("{name}", name).replace("{dashboardUrl}", marketPlace),
-  });
+export const welcomeEmail = async (name, email, language = 'en') => {
+  try {
+    const htmlContent = Welcome_Email_Template(language, { name, dashboardUrl: marketPlace });
 
+    const response = await resend.emails.send({
+      from: `AI-MALL <${process.env.EMAIL}>`,
+      to: [email],
+      subject: EmailTranslations[language]?.welcome?.subject || `Welcome ${name}`,
+      html: htmlContent,
+    });
+    return response;
+  } catch (error) {
+    console.error('❌ WELCOME EMAIL ERROR:', error);
+  }
 };
 
-export const sendResetPasswordEmail = async (email, name, resetUrl) => {
+// RESET PASSWORD LINK EMAIL
+export const sendResetPasswordEmail = async (email, name, resetUrl, language = 'en') => {
   try {
+    const htmlContent = Reset_Password_Email_Template(language, { name, resetUrl });
+
     const response = await resend.emails.send({
       from: `AI-MALL <${process.env.EMAIL}>`,
       to: [email],
       subject: "Reset Your Password",
-      html: Reset_Password_Email_Template.replace("{name}", name).replace("{resetUrl}", resetUrl)
+      html: htmlContent
     })
     console.log("resend_msg", response);
   } catch (error) {
@@ -51,13 +69,16 @@ export const sendResetPasswordEmail = async (email, name, resetUrl) => {
   }
 }
 
-export const sendResetPasswordOTPEmail = async (email, name, otp) => {
+// RESET PASSWORD OTP EMAIL
+export const sendResetPasswordOTPEmail = async (email, name, otp, language = 'en') => {
   try {
+    const htmlContent = Reset_Password_OTP_Template(language, { name, otp });
+
     const response = await resend.emails.send({
       from: `AI-MALL <${process.env.EMAIL}>`,
       to: [email],
-      subject: "Password Reset OTP",
-      html: Reset_Password_OTP_Template.replace("{name}", name).replace("{otp}", otp)
+      subject: EmailTranslations[language]?.resetOTP?.subject || "Password Reset OTP",
+      html: htmlContent
     });
     console.log(`✅ Reset OTP email sent successfully to ${email}`);
     return response;
@@ -67,13 +88,16 @@ export const sendResetPasswordOTPEmail = async (email, name, otp) => {
   }
 }
 
-export const sendPasswordResetSuccessEmail = async (email, name) => {
+// PASSWORD RESET SUCCESS EMAIL
+export const sendPasswordResetSuccessEmail = async (email, name, language = 'en') => {
   try {
+    const htmlContent = Password_Success_Template(language, { name });
+
     const response = await resend.emails.send({
       from: `AI-MALL <${process.env.EMAIL}>`,
       to: [email],
-      subject: "Password Updated Successfully",
-      html: Password_Success_Template.replace("{name}", name)
+      subject: EmailTranslations[language]?.passwordSuccess?.subject || "Password Updated Successfully",
+      html: htmlContent
     });
     console.log(`✅ Reset success email sent successfully to ${email}`);
     return response;

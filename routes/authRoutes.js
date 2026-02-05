@@ -22,7 +22,7 @@ router.get("/signup", (req, res) => {
 // ====================== SIGNUP =======================
 router.post("/signup", async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, language } = req.body;
 
     // Check user exists
     const existingUser = await UserModel.findOne({ email });
@@ -51,8 +51,8 @@ router.post("/signup", async (req, res) => {
 
     // Send OTP email (don't block signup if email fails)
     try {
-      await sendVerificationEmail(newUser.email, newUser.name, newUser.verificationCode);
-      console.log(`✅ OTP email sent successfully to ${newUser.email}`);
+      await sendVerificationEmail(newUser.email, newUser.name, newUser.verificationCode, language);
+      console.log(`✅ OTP email sent successfully to ${newUser.email} (Lang: ${language})`);
     } catch (emailError) {
       console.error(`⚠️ Failed to send OTP email to ${newUser.email}:`, emailError);
       // Continue with signup even if email fails - user can request resend later
@@ -115,7 +115,7 @@ router.post("/login", async (req, res) => {
 // ====================== FORGOT PASSWORD =======================
 router.post("/forgot-password", async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, language } = req.body;
     const user = await UserModel.findOne({ email });
 
     if (!user) {
@@ -130,7 +130,7 @@ router.post("/forgot-password", async (req, res) => {
     await user.save();
 
     try {
-      await sendResetPasswordOTPEmail(user.email, user.name, otp);
+      await sendResetPasswordOTPEmail(user.email, user.name, otp, language);
       res.status(200).json({ message: "OTP Sent Successfully to your Email" });
     } catch (err) {
       user.resetPasswordOTP = undefined;
@@ -171,7 +171,7 @@ router.post("/verify-otp", async (req, res) => {
 // ====================== VERIFY OTP & RESET PASSWORD =======================
 router.post("/verify-reset-otp", async (req, res) => {
   try {
-    const { email, otp, newPassword } = req.body;
+    const { email, otp, newPassword, language } = req.body;
 
     const user = await UserModel.findOne({
       email,
@@ -195,7 +195,7 @@ router.post("/verify-reset-otp", async (req, res) => {
 
     // Send confirmation email
     try {
-      await sendPasswordResetSuccessEmail(user.email, user.name);
+      await sendPasswordResetSuccessEmail(user.email, user.name, language);
     } catch (err) {
       console.error("Failed to send password reset success email:", err);
     }

@@ -8,7 +8,7 @@ const router = express.Router()
 
 router.post("/", async (req, res) => {
     try {
-        const { code, email } = req.body;
+        const { code, email, language } = req.body;
 
         console.log(`🔍 Verification attempt for: ${email}`);
         console.log(`🔍 Received code: ${code}`);
@@ -45,7 +45,7 @@ router.post("/", async (req, res) => {
             });
 
             // Send welcome email (don't await to avoid blocking)
-            welcomeEmail(user.name, user.email).catch(err =>
+            welcomeEmail(user.name, user.email, language).catch(err =>
                 console.error('Welcome email failed:', err)
             );
 
@@ -63,7 +63,7 @@ router.post("/", async (req, res) => {
 // Resend OTP endpoint
 router.post("/resend", async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, language } = req.body;
 
         if (!email) {
             return res.status(400).json({ error: "Email is required" });
@@ -86,8 +86,8 @@ router.post("/resend", async (req, res) => {
 
         // Send new OTP email
         try {
-            await sendVerificationEmail(user.email, user.name, user.verificationCode);
-            console.log(`✅ Resent OTP to ${user.email}`);
+            await sendVerificationEmail(user.email, user.name, user.verificationCode, language);
+            console.log(`✅ Resent OTP to ${user.email} (Lang: ${language})`);
             res.status(200).json({ message: "Verification code resent successfully" });
         } catch (emailError) {
             console.error(`⚠️ Failed to resend OTP to ${user.email}:`, emailError);
