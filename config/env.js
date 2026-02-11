@@ -1,5 +1,14 @@
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Explicitly load .env from AIMALL-BACKEND root
+dotenv.config({ path: path.join(__dirname, '../.env') });
+
+console.log("DEBUG ENV: MONGODB_ATLAS_URI from process.env:", process.env.MONGODB_ATLAS_URI);
 
 export const PORT = process.env.PORT || 8080;
 export const MONGO_URI = process.env.MONGODB_ATLAS_URI;

@@ -9,7 +9,14 @@ const messageSchema = new mongoose.Schema({
     required: true
   },
   content: { type: String, required: true },
-  timestamp: { type: Number, default: Date.now }
+  timestamp: { type: Number, default: Date.now },
+  attachments: [{
+    type: { type: String, enum: ['image', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'] },
+    url: String,
+    name: String
+  }],
+  imageUrl: String,
+  videoUrl: String
 });
 
 const chatSessionSchema = new mongoose.Schema({
@@ -22,12 +29,17 @@ const chatSessionSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    index: true
+    required: false
+  },
+  guestId: {
+    type: String,
+    index: true,
+    required: false
   },
   title: { type: String, default: 'New Chat' },
   messages: [messageSchema],
-  lastModified: { type: Number, default: Date.now }
+  lastModified: { type: Number, default: Date.now },
+  detectedMode: { type: String, default: 'NORMAL_CHAT' }
 }, { timestamps: true });
 const ChatSession = mongoose.model('ChatSession', chatSessionSchema);
 export default ChatSession

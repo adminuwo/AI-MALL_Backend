@@ -24,6 +24,13 @@ import supportChatRoutes from './routes/supportChatRoutes.js';
 import vendorChatRoutes from './routes/vendorChatRoutes.js';
 import aibaseApp from './aibase_module/app.js';
 import { dynamicRateLimiter } from "./middleware/dynamicRateLimiter.js";
+import imageRoutes from "./routes/imageRoutes.js";
+import videoRoutes from "./routes/videoRoutes.js";
+import voiceRoutes from "./routes/voiceRoutes.js";
+import feedbackRoutes from "./routes/feedbackRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
+import reminderRoutes from "./routes/reminderRoutes.js";
+import personalTaskRoutes from "./routes/personalTaskRoutes.js";
 
 const app = express();
 
@@ -34,7 +41,39 @@ app.use((req, res, next) => {
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:5175',
+      'http://localhost:5176',
+      'http://localhost:3000',
+      'http://localhost:3001'
+    ];
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.startsWith('http://localhost')) {
+      return callback(null, true);
+    }
+    const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+    return callback(new Error(msg), false);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'X-Requested-With',
+    'Accept',
+    'Origin',
+    'x-device-fingerprint',
+    'X-Device-Fingerprint',
+    'Cache-Control',
+    'Pragma'
+  ],
+  exposedHeaders: ['Content-Length', 'X-Request-Id']
+}));
 app.use(cookieParser())
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
@@ -75,6 +114,13 @@ app.use('/api/revenue', revenueRoutes);
 app.use('/api/support', supportRoutes);
 app.use('/api/support-chat', supportChatRoutes);
 app.use('/api/vendor-chat', vendorChatRoutes);
+app.use('/api/image', imageRoutes);
+app.use('/api/video', videoRoutes);
+app.use('/api/voice', voiceRoutes);
+app.use('/api/feedback', feedbackRoutes);
+app.use('/api/payment', paymentRoutes);
+app.use('/api/reminders', reminderRoutes);
+app.use('/api/personal-assistant', personalTaskRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
@@ -86,14 +132,22 @@ app.use((err, req, res, next) => {
 const startServer = async () => {
   try {
     console.log("Starting server initialization...");
-    await connectDB();
-    console.log("Database connection successful. Starting Express server...");
+    try {
+      await connectDB();
+      console.log("Database connection successful.");
+    } catch (dbErr) {
+      console.warn("⚠️  MongoDB connection failed. Server will start without database:");
+      console.warn(dbErr.message);
+      console.warn("Some features requiring database may not work properly.");
+    }
 
-    app.listen(PORT, '0.0.0.0', () => {
-      console.log(`A-Series Backend running on http://0.0.0.0:${PORT}`);
+    console.log("Starting Express server...");
+    app.listen(PORT, () => {
+      console.log(`✅ A-Series Backend running on port ${PORT}`);
+      console.log(`📡 CORS enabled for localhost ports`);
     });
   } catch (err) {
-    console.error("CRITICAL: Failed to start server during initialization:");
+    console.error("CRITICAL: Failed to start Express server:");
     console.error(err);
     process.exit(1);
   }

@@ -1,11 +1,11 @@
 import AIBIZHistory from "../models/AIBIZHistory.js";
-import { genAI } from "../config/gemini.js";
+import { vertexAI } from "../config/vertex.js";
 import mongoose from "mongoose";
 
 // Using gemini-1.5-flash as it is the standard model configured in this project
 // equivalent to gemini-2.5-flash from the original AIBIZ code if it was a typo or alias
-const bizModel = genAI.getGenerativeModel({
-    model: "gemini-flash-latest",
+const bizModel = vertexAI.getGenerativeModel({
+    model: "gemini-2.5-flash",
 });
 
 /* ------------------ Generate + Save ------------------ */
@@ -138,7 +138,7 @@ export const getHistory = async (req, res) => {
         // If authenticated, we could filter by user. For now returning all or per user preference.
         // Adapting AIBIZ original behavior (all history) but respecting user isolation if possible.
         // For now, let's keep it simple and return all like original, or filter if userId is present?
-        // The original AIBIZ didn't have auth. The A-Series has auth.
+        // The original AIBIZ didn't have auth. The AI-MALL has auth.
         // To be safe and consistent with "AI-Mall", we should probably only show the user's history?
         // But the requirements said "add AIBIZ agent... updated version".
         // Let's filter by userId if req.user exists, otherwise return empty or all?

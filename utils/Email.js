@@ -1,67 +1,41 @@
-import {
-  Verification_Email_Template,
-  Welcome_Email_Template,
-  Reset_Password_Email_Template,
-  Reset_Password_OTP_Template,
-  Password_Success_Template,
-  EmailTranslations
-} from "./EmailTemplate.js";
+import { Verification_Email_Template, Welcome_Email_Template, Reset_Password_Email_Template, Password_Change_Success_Template, Reset_Password_OTP_Template } from "./EmailTemplate.js";
 import { resend, transporter } from "./Email.config.js";
-import { marketPlace } from "../consts.js";
+import { dashboardUrl } from "../consts.js";
 //  console.log(transporter);
 
-// SEND VERIFICATION EMAIL
-export const sendVerificationEmail = async (email, name, verificationCode, language = 'en') => {
+export const sendVerificationEmail = async (email, name, verificationCode) => {
   try {
-    console.log(`📧 Attempting to send verification email to: ${email} (Lang: ${language})`);
-    console.log(`📧 From: A-Series <${process.env.EMAIL}>`);
-
-    // Use the template function with language support
-    const htmlContent = Verification_Email_Template(language, { name, verificationCode });
-
     const response = await resend.emails.send({
-      from: `AI-MALL <${process.env.EMAIL}>`,
+      from: `AISA <${process.env.EMAIL}>`,
       to: [email],
-      subject: EmailTranslations[language]?.verification?.subject || "Verify Your Email",
-      html: htmlContent
-    });
-
-    console.log("✅ Verification email sent successfully:", response);
-    return response;
+      subject: "Verify Your Email",
+      html: Verification_Email_Template.replace("{name}", name).replace("{verificationCode}", verificationCode)
+    })
+    console.log("resend_msg", response);
 
   } catch (error) {
-    console.error('❌ VERIFICATION EMAIL ERROR:', error);
-    throw error; // Re-throw to let the caller know it failed
+    console.log('Email error', error)
   }
 }
 
 // WELCOME EMAIL
-export const welcomeEmail = async (name, email, language = 'en') => {
-  try {
-    const htmlContent = Welcome_Email_Template(language, { name, dashboardUrl: marketPlace });
+export const welcomeEmail = async (name, email) => {
+  const info = await resend.emails.send({
+    from: `AISA <${process.env.EMAIL}>`,
+    to: [email],
+    subject: `Welcome ${name}`,
+    html: Welcome_Email_Template.replace("{name}", name).replace("{dashboardUrl}", dashboardUrl),
+  });
 
-    const response = await resend.emails.send({
-      from: `AI-MALL <${process.env.EMAIL}>`,
-      to: [email],
-      subject: EmailTranslations[language]?.welcome?.subject || `Welcome ${name}`,
-      html: htmlContent,
-    });
-    return response;
-  } catch (error) {
-    console.error('❌ WELCOME EMAIL ERROR:', error);
-  }
 };
 
-// RESET PASSWORD LINK EMAIL
-export const sendResetPasswordEmail = async (email, name, resetUrl, language = 'en') => {
+export const sendResetPasswordEmail = async (email, name, resetUrl) => {
   try {
-    const htmlContent = Reset_Password_Email_Template(language, { name, resetUrl });
-
     const response = await resend.emails.send({
-      from: `AI-MALL <${process.env.EMAIL}>`,
+      from: `AISA <${process.env.EMAIL}>`,
       to: [email],
       subject: "Reset Your Password",
-      html: htmlContent
+      html: Reset_Password_Email_Template.replace("{name}", name).replace("{resetUrl}", resetUrl)
     })
     console.log("resend_msg", response);
   } catch (error) {
@@ -69,70 +43,85 @@ export const sendResetPasswordEmail = async (email, name, resetUrl, language = '
   }
 }
 
-// RESET PASSWORD OTP EMAIL
-export const sendResetPasswordOTPEmail = async (email, name, otp, language = 'en') => {
+export const sendResetPasswordOTP = async (email, name, otpCode) => {
   try {
-    const htmlContent = Reset_Password_OTP_Template(language, { name, otp });
-
     const response = await resend.emails.send({
-      from: `AI-MALL <${process.env.EMAIL}>`,
+      from: `AISA <${process.env.EMAIL}>`,
       to: [email],
-      subject: EmailTranslations[language]?.resetOTP?.subject || "Password Reset OTP",
-      html: htmlContent
-    });
-    console.log(`✅ Reset OTP email sent successfully to ${email}`);
-    return response;
+      subject: "Your Password Reset OTP",
+      html: Reset_Password_OTP_Template.replace("{name}", name).replace("{otpCode}", otpCode)
+    })
+    console.log("resend_otp_msg", response);
   } catch (error) {
-    console.error('❌ RESET OTP EMAIL ERROR:', error);
-    throw error;
+    console.log('Email OTP error', error)
   }
 }
 
-// PASSWORD RESET SUCCESS EMAIL
-export const sendPasswordResetSuccessEmail = async (email, name, language = 'en') => {
+export const sendPasswordChangeSuccessEmail = async (email, name) => {
   try {
-    const htmlContent = Password_Success_Template(language, { name });
-
     const response = await resend.emails.send({
-      from: `AI-MALL <${process.env.EMAIL}>`,
+      from: `AISA <${process.env.EMAIL}>`,
       to: [email],
-      subject: EmailTranslations[language]?.passwordSuccess?.subject || "Password Updated Successfully",
-      html: htmlContent
-    });
-    console.log(`✅ Reset success email sent successfully to ${email}`);
-    return response;
+      subject: "Password Updated Successfully",
+      html: Password_Change_Success_Template.replace("{name}", name)
+    })
+    console.log("resend_msg", response);
   } catch (error) {
-    console.error('❌ RESET SUCCESS EMAIL ERROR:', error);
-    throw error;
+    console.log('Email error', error)
   }
 }
 
-
-export const sendContactAdminEmail = async (adminEmail, vendorName, vendorEmail, subject, message) => {
+export const sendFeedbackEmail = async (feedback) => {
   try {
-    const htmlContent = `
-      <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-        <h2 style="color: #2563eb;">New Admin Support Inquiry</h2>
-        <p><strong>From:</strong> ${vendorName} (${vendorEmail})</p>
-        <p><strong>Subject:</strong> ${subject}</p>
-        <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
-          <p style="white-space: pre-wrap;">${message}</p>
+    const isUp = feedback.type === 'thumbs_up';
+    const response = await resend.emails.send({
+      from: `AISA Feedback <${process.env.EMAIL}>`,
+      to: ['admin@uwo24.com'],
+      subject: `📢 New Feedback: ${isUp ? 'Positive' : 'Negative'}`,
+      html: `
+        <div style="font-family: sans-serif; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+          <h2 style="color: ${isUp ? '#10b981' : '#ef4444'}">${isUp ? '👍 Thumbs Up' : '👎 Thumbs Down'}</h2>
+          <p><strong>Session ID:</strong> ${feedback.sessionId}</p>
+          <p><strong>Message ID:</strong> ${feedback.messageId}</p>
+          ${feedback.categories && feedback.categories.length > 0 ? `<p><strong>Categories:</strong> ${feedback.categories.join(', ')}</p>` : ''}
+          <p><strong>Details:</strong> ${feedback.details || 'None'}</p>
+          <hr />
+          <p style="font-size: 12px; color: #666;">Generated by AISA Feedback System</p>
         </div>
-        <hr style="border: 1px solid #eee; margin: 20px 0;" />
-        <p style="font-size: 12px; color: #888;">This message was sent from the Vendor Dashboard.</p>
-      </div>
-    `;
-
-    const response = await resend.emails.send({
-      from: `AI-MALL System <${process.env.EMAIL}>`,
-      to: [adminEmail],
-      reply_to: vendorEmail,
-      subject: `[Vendor Support] ${subject}`,
-      html: htmlContent
+      `
     });
-    console.log("Admin contact email sent:", response);
+    console.log("feedback_email_res", response);
   } catch (error) {
-    console.log('Admin contact email error:', error);
+    console.log('Feedback email error', error);
   }
 }
 
+
+
+
+export const sendResetPasswordOTPEmail = sendResetPasswordOTP;
+export const sendPasswordResetSuccessEmail = sendPasswordChangeSuccessEmail;
+export const sendContactAdminEmail = async (data) => {
+  try {
+    const response = await resend.emails.send({
+      from: `AISA Contact <${process.env.EMAIL}>`,
+      to: ['admin@uwo24.com'], // Or process.env.ADMIN_EMAIL
+      subject: `New Vendor Contact: ${data.subject}`,
+      html: `
+        <div style="font-family: sans-serif; padding: 20px;">
+          <h2>New Vendor Inquiry</h2>
+          <p><strong>Name:</strong> ${data.name}</p>
+          <p><strong>Email:</strong> ${data.email}</p>
+          <p><strong>Subject:</strong> ${data.subject}</p>
+          <p><strong>Message:</strong></p>
+          <blockquote style="background: #f9f9f9; padding: 10px; border-left: 4px solid #ccc;">
+            ${data.message}
+          </blockquote>
+        </div>
+      `
+    });
+    console.log("contact_admin_email_res", response);
+  } catch (error) {
+    console.log('Contact Admin email error', error);
+  }
+};

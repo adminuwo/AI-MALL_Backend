@@ -3,8 +3,14 @@ import dns from 'dns';
 import { MONGO_URI } from './env.js';
 import logger from '../utils/logger.js';
 
-// Force IPv4 first to avoid DNS resolution issues
+// Force IPv4 first and use Google DNS to avoid resolution issues
 dns.setDefaultResultOrder('ipv4first');
+try {
+  dns.setServers(['8.8.8.8', '8.8.4.4']);
+  logger.info("Set custom DNS servers: 8.8.8.8, 8.8.4.4");
+} catch (e) {
+  logger.warn("Failed to set custom DNS servers:", e);
+}
 
 const connectDB = async () => {
   try {
