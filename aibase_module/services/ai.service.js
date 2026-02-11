@@ -1,5 +1,5 @@
 import { MongoDBAtlasVectorSearch } from "@langchain/mongodb";
-import { HuggingFaceTransformersEmbeddings } from "@langchain/community/embeddings/huggingface_transformers";
+import { GoogleVertexAIEmbeddings } from "@langchain/community/embeddings/googlevertexai";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import mongoose from "mongoose";
 import logger from "../utils/logger.js";
@@ -14,10 +14,14 @@ let embeddings = null;
 
 const initializeVectorStore = async () => {
     if (!embeddings) {
-        // Keeping a local instance for CHAT queries (low latency, single embedding)
-        logger.info("Initializing Local Embeddings (Xenova/all-MiniLM-L6-v2) for Chat...");
-        embeddings = new HuggingFaceTransformersEmbeddings({
-            modelName: "Xenova/all-MiniLM-L6-v2",
+        // Use Vertex AI Embeddings (Cloud-based, no local binaries)
+        // Ensure credentials are set via ADC or keyFilename in environment
+        logger.info("Initializing Vertex AI Embeddings (text-embedding-004)...");
+        embeddings = new GoogleVertexAIEmbeddings({
+            model: "text-embedding-004", // Optimize for cost/performance
+            maxOutputTokens: 2048,
+            location: 'asia-south1',
+            // project: process.env.GCP_PROJECT_ID // Optional if ADC is working
         });
     }
     if (!vectorStore) {

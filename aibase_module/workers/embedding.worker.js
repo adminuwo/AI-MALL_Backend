@@ -1,15 +1,18 @@
 const { parentPort, workerData } = require('worker_threads');
 const { RecursiveCharacterTextSplitter } = require("langchain/text_splitter");
-const { HuggingFaceTransformersEmbeddings } = require("@langchain/community/embeddings/huggingface_transformers");
+const { GoogleVertexAIEmbeddings } = require("@langchain/community/embeddings/googlevertexai");
 
 let embeddings = null;
 
 // Initialize embeddings in the worker thread
 const initializeEmbeddings = async () => {
     if (!embeddings) {
+        // Use Vertex AI Embeddings (Cloud-based, no local binaries)
         // console.log("Worker: Initializing Embeddings Model...");
-        embeddings = new HuggingFaceTransformersEmbeddings({
-            modelName: "Xenova/all-MiniLM-L6-v2",
+        embeddings = new GoogleVertexAIEmbeddings({
+            model: "text-embedding-004", // Optimize for cost/performance
+            maxOutputTokens: 2048,
+            location: 'asia-south1',
         });
     }
 };
