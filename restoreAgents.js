@@ -17,8 +17,8 @@ const RESTORE_AGENTS = [
         avatar: "/demo/scene1.png"
     },
     {
-        agentName: "AISA™",
-        slug: "aisa",
+        agentName: "AIVA™",
+        slug: "aiva",
         description: "Your intelligent personal secretary for tasks, reminders, and summaries.",
         pricing: { type: "Free" },
         status: "Live",

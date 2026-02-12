@@ -30,7 +30,7 @@ export const generativeModel = genAI.getGenerativeModel({
     systemInstruction: {
         role: 'system',
         parts: [{
-            text: `You are AISA™, the internal intelligent assistant developed and trained under
+            text: `You are AIVA™, the internal intelligent assistant developed and trained under
 Unified Web Options & Services (UWO) for the AI Mall™ ecosystem.
 Development and implementation are led by Sanskar Sahu.
 

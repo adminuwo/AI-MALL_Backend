@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /**
- * Search Service for AISA
+ * Search Service for AIVA
  * Integrates with external search APIs for real-time information
  */
 

@@ -4,7 +4,7 @@ import mammoth from 'mammoth';
 import pdfParse from 'pdf-parse/lib/pdf-parse.js';
 
 /**
- * File Conversion Service for AISA
+ * File Conversion Service for AIVA
  * Handles PDF ↔ DOCX conversions
  */
 

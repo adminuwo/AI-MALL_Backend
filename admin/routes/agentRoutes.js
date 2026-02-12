@@ -21,7 +21,7 @@ route.get("/", async (req, res) => {
       // No filter - show all agents
     } else if (featured === 'true') {
       // Whitelist for Featured Agents on Landing Page
-      const permittedAgents = ['AISA', 'AIBASE', 'AIBIZ', 'AICRAFT'];
+      const permittedAgents = ['AIVA', 'AIBASE', 'AIBIZ', 'AICRAFT'];
 
       // Case-insensitive match for agentName
       filter.agentName = {

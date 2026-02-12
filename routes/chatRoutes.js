@@ -772,7 +772,7 @@ Stack: ${err.stack}
       fs.appendFileSync('error.log', logData);
     } catch (e) { console.error("Log error:", e); }
 
-    console.error("AISA backend error details:", {
+    console.error("AIVA backend error details:", {
       message: err.message,
       stack: err.stack,
       code: err.code,

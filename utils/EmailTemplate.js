@@ -4,7 +4,7 @@ export const Verification_Email_Template = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Your Email - AISA™</title>
+    <title>Verify Your Email - AIVA™</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -106,22 +106,22 @@ export const Verification_Email_Template = `
         <div class="content">
             <p class="greeting">Hello {name},</p>
             <p class="info-text">
-                Thank you for signing up with AISA™! To complete your registration, please verify your email address using the code below:
+                Thank you for signing up with AIVA™! To complete your registration, please verify your email address using the code below:
             </p>
             <span class="verification-code">{verificationCode}</span>
             <div class="expiry-notice">
                 ⏱️ This verification code will expire in 15 minutes for security purposes.
             </div>
             <p class="info-text">
-                Simply enter this code on the verification page to activate your account and start chatting with AISA™.
+                Simply enter this code on the verification page to activate your account and start chatting with AIVA™.
             </p>
             <div class="security-note">
-                <strong>🛡️ Security Notice:</strong> If you did not create an account with AISA™, please disregard this email. No further action is required, and your email address will not be used.
+                <strong>🛡️ Security Notice:</strong> If you did not create an account with AIVA™, please disregard this email. No further action is required, and your email address will not be used.
             </div>
         </div>
         <div class="footer">
-            <p><strong>AISA™</strong> - Your Intelligent AI Chat Assistant</p>
-            <p>&copy; ${new Date().getFullYear()} AISA™. All rights reserved.</p>
+            <p><strong>AIVA™</strong> - Your Intelligent AI Chat Assistant</p>
+            <p>&copy; ${new Date().getFullYear()} AIVA™. All rights reserved.</p>
             <p>Need help? Contact us at <a href="mailto:support@aimall.com">support@aimall.com</a></p>
         </div>
     </div>
@@ -135,7 +135,7 @@ export const Welcome_Email_Template = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to AISA™</title>
+    <title>Welcome to AIVA™</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -271,15 +271,15 @@ export const Welcome_Email_Template = `
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎉 Welcome to AISA™!</h1>
+            <h1>🎉 Welcome to AIVA™!</h1>
             <p>Your Gateway to Intelligent AI Agents</p>
         </div>
         <div class="content">
             <p class="welcome-message">Hello {name},</p>
             <p class="intro-text">
-                We're thrilled to welcome you to AISA™, your intelligent AI chat assistant! 
+                We're thrilled to welcome you to AIVA™, your intelligent AI chat assistant! 
                 Your journey into the future of AI-powered solutions starts here. Whether you're looking to 
-                explore cutting-edge AI capabilities, AISA™ is here to help with 
+                explore cutting-edge AI capabilities, AIVA™ is here to help with 
                 everything you need.
             </p>
 
@@ -300,7 +300,7 @@ export const Welcome_Email_Template = `
                     <li><strong>Try Before You Buy:</strong> Test drive AI agents with free trials to find the perfect match for your requirements.</li>
                     <li><strong>Customize Your Experience:</strong> Configure agents to work exactly how you want them, with personalized settings and integrations.</li>
                     <li><strong>Join the Community:</strong> Connect with other AI enthusiasts, share experiences, and stay updated on the latest AI innovations.</li>
-                    <li><strong>24/7 Support:</strong> Our dedicated support team is always here to help you get the most out of AISA.</li>
+                    <li><strong>24/7 Support:</strong> Our dedicated support team is always here to help you get the most out of AIVA.</li>
                 </ul>
             </div>
 
@@ -309,18 +309,18 @@ export const Welcome_Email_Template = `
             </div>
 
             <div class="support-section">
-                <strong>💡 Pro Tip:</strong> Try image generation and deep search features with AISA! 
+                <strong>💡 Pro Tip:</strong> Try image generation and deep search features with AIVA! 
                 Check out our trending section for the top-rated AI solutions loved by our community.
             </div>
 
             <p class="intro-text" style="margin-top: 25px;">
-                Thank you for choosing AISA™. We're committed to bringing you the most advanced and 
+                Thank you for choosing AIVA™. We're committed to bringing you the most advanced and 
                 reliable AI agents to transform how you work, create, and innovate.
             </p>
         </div>
         <div class="footer">
-            <p><strong>AISA™</strong> - Your Intelligent AI Chat Assistant</p>
-            <p>&copy; ${new Date().getFullYear()} AISA™. All rights reserved.</p>
+            <p><strong>AIVA™</strong> - Your Intelligent AI Chat Assistant</p>
+            <p>&copy; ${new Date().getFullYear()} AIVA™. All rights reserved.</p>
             <p>Need assistance? Reach out to us at <a href="mailto:support@aimall.com">support@aimall.com</a></p>
             <p style="margin-top: 10px;">
                 <a href="{privacyUrl}">Privacy Policy</a> | 
@@ -338,7 +338,7 @@ export const Reset_Password_OTP_Template = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Your Password - AISA™</title>
+    <title>Reset Your Password - AIVA™</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -421,7 +421,7 @@ export const Reset_Password_OTP_Template = `
             </p>
         </div>
         <div class="footer">
-            <p><strong>AISA™</strong> - Secure & Intelligent AI Chat</p>
+            <p><strong>AIVA™</strong> - Secure & Intelligent AI Chat</p>
         </div>
     </div>
 </body>
@@ -434,7 +434,7 @@ export const Reset_Password_Email_Template = `
             <head>
                 <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>Reset Your Password - AISA™</title>
+                        <title>Reset Your Password - AIVA™</title>
                         <style>
                             body {
                                 font - family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -500,14 +500,14 @@ export const Reset_Password_Email_Template = `
                             </div>
                             <div class="content">
                                 <p>Hello {name},</p>
-                                <p>We received a request to reset your password for your AISA™ account. Click the button below to proceed:</p>
+                                <p>We received a request to reset your password for your AIVA™ account. Click the button below to proceed:</p>
                                 <div style="text-align: center;">
                                     <a href="{resetUrl}" class="button">Reset Password</a>
                                 </div>
                                 <p>If you didn't request a password reset, you can safely ignore this email.</p>
                             </div>
                             <div class="footer">
-                                <p><strong>AISA™</strong> - Secure & Intelligent AI Chat</p>
+                                <p><strong>AIVA™</strong> - Secure & Intelligent AI Chat</p>
                             </div>
                         </div>
                     </body>
@@ -520,7 +520,7 @@ export const Password_Change_Success_Template = `
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Changed Successfully - AISA™</title>
+    <title>Password Changed Successfully - AIVA™</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; line-height: 1.6; }
         .container { max-width: 600px; margin: 30px auto; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); overflow: hidden; border: 1px solid #ddd; }
@@ -537,11 +537,11 @@ export const Password_Change_Success_Template = `
         </div>
         <div class="content">
             <p>Hello {name},</p>
-            <p>Your password for AISA™ has been successfully updated.</p>
+            <p>Your password for AIVA™ has been successfully updated.</p>
             <p>If you did not make this change, please contact our support team immediately.</p>
         </div>
         <div class="footer">
-            <p><strong>AISA™</strong> - Secure & Intelligent AI Chat</p>
+            <p><strong>AIVA™</strong> - Secure & Intelligent AI Chat</p>
         </div>
     </div>
 </body>

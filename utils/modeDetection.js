@@ -1,5 +1,5 @@
 /**
- * Mode Detection Utility for AISA
+ * Mode Detection Utility for AIVA
  * Automatically detects the appropriate mode based on user input and context
  */
 
@@ -114,7 +114,7 @@ export function detectMode(message = '', attachments = []) {
  * @returns {string} - System instruction for the mode
  */
 export function getModeSystemInstruction(mode, language = 'English', context = {}) {
-  const { agentName = 'AISA', agentCategory = 'General', fileCount = 0 } = context;
+  const { agentName = 'AIVA', agentCategory = 'General', fileCount = 0 } = context;
 
   const baseIdentity = `You are ${agentName}, an AI Super Assistant built for productivity, intelligence, and real-world execution.`;
 

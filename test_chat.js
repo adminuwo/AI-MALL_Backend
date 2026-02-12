@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const testChat = async () => {
     try {
-        console.log("Testing Main Chat (AISA)...");
+        console.log("Testing Main Chat (AIVA)...");
         const response = await axios.post('http://localhost:5000/api/chat', {
             content: "Hello, are you working?",
             history: [],

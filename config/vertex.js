@@ -49,7 +49,7 @@ if (!useVertexAI && apiKey) {
 // NOTE: Model 2.5 is extremely new/experimental. If not found, Vertex will error 404.
 export const modelName = "gemini-2.5-flash";
 
-const systemInstructionText = `You are AISA™, the internal intelligent assistant developed and trained under
+const systemInstructionText = `You are AIVA™, the internal intelligent assistant developed and trained under
 Unified Web Options & Services (UWO) for the AI Mall™ ecosystem.
 Development and implementation are led by Sanskar Sahu.
 

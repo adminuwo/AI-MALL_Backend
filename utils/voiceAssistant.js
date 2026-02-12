@@ -1,5 +1,5 @@
 /**
- * Voice Assistant Utility for AISA
+ * Voice Assistant Utility for AIVA
  * Handles intent classification, reminder/alarm extraction, and voice-friendly responses
  */
 
@@ -188,7 +188,7 @@ export function detectLanguage(message) {
 export function getVoiceSystemInstruction(language = 'English') {
     const responseLanguage = language === 'Hindi' || language === 'Hinglish' ? 'Hinglish' : 'English';
 
-    return `You are AISA™, a voice-first AI Super Assistant.
+    return `You are AIVA™, a voice-first AI Super Assistant.
 
 VOICE-FIRST RULES:
 - Responses optimized for being spoken aloud

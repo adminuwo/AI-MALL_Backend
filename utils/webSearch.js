@@ -1,5 +1,5 @@
 /**
- * Web Search Utility for AISA
+ * Web Search Utility for AIVA
  * Handles intelligent web search decision logic and result processing
  */
 
@@ -74,7 +74,7 @@ export function requiresWebSearch(query) {
 export function extractSearchQuery(message) {
     // Remove common prefixes
     let query = message
-        .replace(/^(aisa|hey|hi|hello|tell me|what is|what's|whats)/i, '')
+        .replace(/^(aiva|hey|hi|hello|tell me|what is|what's|whats)/i, '')
         .trim();
 
     return query || message;
@@ -157,7 +157,7 @@ export function getWebSearchSystemInstruction(searchResults, language = 'English
     - Natural source citations
     `;
 
-    return `You are AISA™, an AI Super Assistant with real-time information awareness.
+    return `You are AIVA™, an AI Super Assistant with real-time information awareness.
 
 WEB SEARCH DATA PROVIDED:
 The following web search results have been provided for this query:
